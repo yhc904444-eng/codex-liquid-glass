@@ -1,0 +1,8 @@
+/dist/
+/qa/
+/node_modules/
+*.log
+*.tmp
+/app/
+/profile/
+/original-*
