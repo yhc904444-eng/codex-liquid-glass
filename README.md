@@ -2,7 +2,7 @@
 
 A clear glass appearance for the **OpenAI Codex desktop app on Windows**.
 The customization brings a continuous acrylic window, translucent workspace,
-glass composer, settings panels, menus, tooltips, and hover popovers. Adjust
+glass composer, settings panels, peeking sidebars, menus, tooltips, and hover popovers. Adjust
 tint, edge highlights, workspace transparency, composer transparency, and
 additional blur in **Settings > Appearance**. Changes apply immediately and
 are saved on your computer.
@@ -15,7 +15,7 @@ included in this repository or its downloads.
 
 1. Use **Windows 11 22H2 or newer, x64**. Allow approximately **5 GB of free
    disk space** for the separate client copy and temporary installation files.
-2. Download **Codex-Liquid-Glass-1.0.0-Setup.exe** from this repository's
+2. Download **Codex-Liquid-Glass-1.1.0-Setup.exe** from this repository's
    Releases page and open it. No Node.js, npm, Python, build tools, or manual
    code changes are required. The installer runs for your Windows account;
    it does not request administrator access.
@@ -33,6 +33,12 @@ applications or local application modifications can prevent installation.
 
 The ZIP alternative contains the same installer scripts. Extract it and
 double-click **Install.cmd**.
+
+Version **1.1.0** extends glass to the sidebar that appears when hovering over
+the navigation rail. Floating menus and dialogs share the same material,
+including search dialog corners and nested panels. To upgrade from 1.0.0,
+fully exit Liquid Glass, uninstall the old customized copy, then run the new
+installer. The isolated profile and saved glass preferences are retained.
 
 ## Compatibility
 

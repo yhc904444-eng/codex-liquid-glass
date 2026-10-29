@@ -24,6 +24,31 @@ function(initial,css,openSettings) {
       if(values&&values.length>=3&&(values.length===3||values[3]>.94))el.setAttribute('data-lg-settings-layer','');
     }
   };
+  // The peeking sidebar is a native layout surface, not an ARIA popup.
+  // Keep one glass coat on each floating surface and clear only neutral layout fills.
+  const floatingSelector='[data-slate-sidebar-peeking="true"] [data-slate-sidebar-content],[role="menu"],[role="listbox"],[role="tooltip"],[role="dialog"],[role="alertdialog"],.codex-dialog,[class*="_Popover_"],[class*="_Tooltip_"],[class*="_fileHoverCard_"],[popover]';
+  const floatingSurfaces=new Set();
+  const mountFloatingGlass=()=>{
+    const surfaces=new Set([...document.querySelectorAll(floatingSelector)].filter(el=>!el.parentElement?.closest(floatingSelector)));
+    for(const previous of floatingSurfaces){
+      if(surfaces.has(previous))continue;
+      previous.removeAttribute('data-lg-floating-surface');
+      for(const layer of previous.querySelectorAll('[data-lg-floating-layer]'))layer.removeAttribute('data-lg-floating-layer');
+      floatingSurfaces.delete(previous);
+    }
+    for(const surface of surfaces){
+      surface.setAttribute('data-lg-floating-surface',surface.matches('[data-slate-sidebar-content]')?'sidebar':'popup');
+      floatingSurfaces.add(surface);
+      for(const layer of surface.querySelectorAll('div,section,main,aside,nav,header,footer')){
+        if(layer.hasAttribute('data-lg-floating-layer')||layer.closest('button,input,textarea,select,[contenteditable="true"],[role="button"],[role="menuitem"],[role="option"],[role="switch"],[role="tab"]'))continue;
+        const fill=getComputedStyle(layer).backgroundColor;
+        if(!/^(rgba?\(|color\(srgb )/.test(fill))continue;
+        const values=fill.match(/[\d.]+/g)?.map(Number);
+        if(fill.startsWith('color(srgb '))values.splice(0,3,...values.slice(0,3).map(value=>value*255));
+        if(values&&values.length>=3&&(values.length===3||values[3]>.9)&&Math.max(...values.slice(0,3))-Math.min(...values.slice(0,3))<28)layer.setAttribute('data-lg-floating-layer','');
+      }
+    }
+  };
   // Paint one material behind the native project rail and editor without moving React nodes.
   const homeComposers=new Map();
   let homeFrame;
@@ -112,8 +137,8 @@ function(initial,css,openSettings) {
     section.querySelector('#lg-reset').addEventListener('click',()=>{state={enabled:true,opacity:8,highlights:48,workspaceTransparency:94,composerTransparency:90,blur:3};apply();save();});
     apply();
   };
-  apply();mount();mountHomeGlass();mountSettingsGlass();
-  const observer=new MutationObserver(()=>{mount();mountHomeGlass();mountSettingsGlass();});observer.observe(document.body,{childList:true,subtree:true});
+  apply();mount();mountHomeGlass();mountSettingsGlass();mountFloatingGlass();
+  const observer=new MutationObserver(()=>{mount();mountHomeGlass();mountSettingsGlass();mountFloatingGlass();});observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['data-slate-sidebar-peeking','data-state','hidden','open','role']});
   window.addEventListener('resize',queueHomeGlass,{passive:true});
   if(window.codexLiquidGlass) {
     window.codexLiquidGlass.get().then(value=>{state=value;apply();}).catch(console.error);

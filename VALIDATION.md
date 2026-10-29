@@ -1,52 +1,60 @@
 # Release validation
 
-Validation date: 2026-10-26. Platform: Windows x64.
+Release: **1.1.0**. Validation date: **2026-10-29**. Platform: Windows x64.
 
 ## Passed
 
-- Six automated tests cover hashed main-file discovery, unsupported-source
-  rejection without mutation, ambiguous integration-point rejection, archive
-  bounds validation, preserved packed/unpacked/link entries, matching archive
-  integrity metadata, and compilation of the English renderer.
-- Windows PowerShell parses the installer, launcher, uninstaller, and builder.
-- The .NET Framework bootstrap compiles to a Windows Setup EXE.
-- The exact compiled Setup EXE installs successfully in isolated test mode,
-  including when the parent deliberately supplies an invalid PowerShell module
-  path. The bootstrap initializes native Windows PowerShell module discovery.
-- A clean isolated installation from the signed official Store package
-  **26.1021.3705.0** completes without Node/npm setup, shortcuts, profile copying,
-  or modifications to the official installation.
-- Both isolated test installations uninstall successfully while retaining a
-  synthetic profile file. The official archive hash and valid publisher
-  signature remain unchanged afterward.
-- The installer ZIP is checked against its explicit 13-file allowlist. It
-  contains customization material only, with no official executable, archive,
-  browser profile, credential, log, or QA screenshot.
-- The existing compatible client **26.1016.8622.0** was used for real appearance
-  UI verification. Actual settings surfaces become translucent; previously
-  opaque native cards become transparent. A real mouse hover opens the native
-  tooltip with opaque readable text. The real appearance dropdown uses
-  `rgba(255,255,255,0.45)` and a 14 px backdrop blur at the tested preferences.
-- Temporarily removing and restoring the glass CSS class restores native
-  settings/menu materials and re-enables glass after its short transition.
-  Saved preferences are preserved.
+- All six existing automated tests pass: known-source discovery, rejection of
+  unsupported and ambiguous sources without mutation, archive bounds,
+  preserved packed/unpacked/link entries, matching executable archive-integrity
+  metadata, and compilation of the English settings renderer.
+- The installer, launcher, uninstaller, and builder pass PowerShell parsing.
+- The .NET Framework bootstrap compiles into the versioned Windows Setup EXE.
+- The exact compiled Setup EXE installs into an isolated test directory from
+  the signed official Store package **26.1021.3705.0**, using its bundled
+  runtime. This test creates no shortcuts, copies no browser profile, and
+  launches no client.
+- The installed archive contains the release renderer and stylesheet exactly;
+  the installation record and manifest report version **1.1.0** and revision
+  **floating-surfaces-glass-2-en**. The official source archive and publisher
+  signature remain unchanged. Isolated uninstall retains synthetic profile data.
+- The installer ZIP matches its explicit 13-file allowlist and the Setup EXE
+  embeds that same ZIP. No official application executable/archive, private
+  profile, credential, log, or QA screenshot is included in the downloads.
+- Real UI verification of the same floating-surface implementation used a
+  signed-in compatible **26.1016.8622.0** client. The navigation rail's peeking
+  sidebar now receives glass even though it is a layout panel rather than an
+  ARIA menu. Native Windows captures and renderer inspection confirm the result.
 
-## Limits of verification
+At the tested workspace transparency of 95% and additional blur of 0 px:
 
-- On this machine, starting the current client with an empty QA browser profile
-  reaches the official native **Unable to load organization settings** gate.
-  The client reports an account-policy/network/proxy/firewall access problem.
-  The untouched official executable, started with its own separate empty QA
-  profile, reaches the identical native dialog, confirming this gate occurs
-  independently of the customization.
-  A complete fresh-account sign-in and authenticated session could therefore
-  not be verified here. The customization does not bypass that gate or copy
-  cached account data to work around it.
-- Future upstream builds are intentionally rejected until their archive
-  fingerprint and integration points have been verified for a new release.
-- The automatic official-prerequisite download branch is implemented with
-  HTTPS and OpenAI publisher-signature verification. It was not exercised by
-  uninstalling this machine's existing official application.
-- Existing signed-in appearance UI was checked visually using renderer
-  screenshots. The preview's hidden native window did not expose a usable
-  main-window handle for the normal screen-capture helper.
+| Surface | Background alpha | Backdrop blur |
+| --- | --- | --- |
+| Peeking navigation sidebar | 0.19 | 8 px |
+| Profile menu | 0.38 | 10 px |
+| Search dialog | 0.46 | 14 px |
+
+The sidebar's text opacity stays at 1. Search dialog corners remain 20 px,
+with an opaque internal layout fill cleared. Turning glass off restores the
+native sidebar material; turning it back on restores glass. The dark glass
+background color was checked by temporarily changing CSS theme state.
+The floating implementation matches the local validated build; public
+settings labels remain in English.
+
+## Verification limits
+
+- A complete fresh-account sign-in was not repeated for 1.1.0. Earlier 1.0.0
+  testing with clean profiles reached the same native organization-settings
+  policy/network gate in both the official and customized applications.
+  The customization does not bypass account policy or copy cached account data.
+- Full native dark-mode interaction was not repeated; the theme check above
+  covers material color and restoration.
+- Future upstream builds are rejected until their archive fingerprints and
+  integration points are verified. The automatic prerequisite download may
+  fetch a newer upstream build than this release supports.
+- The official-prerequisite download path was not exercised by removing this
+  machine's existing official application.
+
+See **SHA256SUMS.txt** in the release for the Setup EXE, installer ZIP, and
+this validation document. Source and installer material are MIT licensed;
+OpenAI application binaries are obtained locally and are not redistributed.

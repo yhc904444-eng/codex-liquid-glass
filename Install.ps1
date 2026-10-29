@@ -90,7 +90,7 @@ try {
             $shortcuts += $linkPath
         }
     }
-    $record = [ordered]@{Project='CodexLiquidGlass';Version='1.0.0';InstalledAt=[DateTimeOffset]::UtcNow.ToString('o');InstallRoot=$installRootPath;ProfileRoot=$profileRoot;SourceAppPath=$sourceApp;OriginalInstallationModified=$false;ProfileCopied=$false;DebugPortEnabled=$false;Shortcuts=$shortcuts;RegisteredUninstaller=[bool]$isDefaultInstall}
+    $record = [ordered]@{Project='CodexLiquidGlass';Version='1.1.0';InstalledAt=[DateTimeOffset]::UtcNow.ToString('o');InstallRoot=$installRootPath;ProfileRoot=$profileRoot;SourceAppPath=$sourceApp;OriginalInstallationModified=$false;ProfileCopied=$false;DebugPortEnabled=$false;Shortcuts=$shortcuts;RegisteredUninstaller=[bool]$isDefaultInstall}
     $record | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $stageRoot 'installation.json') -Encoding UTF8
     Move-Item -LiteralPath $stageRoot -Destination $installRootPath
     $stageRoot = $null
@@ -111,7 +111,7 @@ try {
         $registry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\CodexLiquidGlass'
         New-Item -Path $registry -Force | Out-Null
         $command = '"' + $powershell + '" -NoProfile -ExecutionPolicy Bypass -File "' + (Join-Path $installRootPath 'Uninstall.ps1') + '"'
-        foreach ($pair in @{DisplayName='Codex Liquid Glass';DisplayVersion='1.0.0';Publisher='Codex Liquid Glass contributors';InstallLocation=$installRootPath;DisplayIcon=((Join-Path $installRootPath 'app\ChatGPT.exe')+',0');UninstallString=$command;QuietUninstallString=$command}.GetEnumerator()) { New-ItemProperty -Path $registry -Name $pair.Key -Value $pair.Value -PropertyType String -Force | Out-Null }
+        foreach ($pair in @{DisplayName='Codex Liquid Glass';DisplayVersion='1.1.0';Publisher='Codex Liquid Glass contributors';InstallLocation=$installRootPath;DisplayIcon=((Join-Path $installRootPath 'app\ChatGPT.exe')+',0');UninstallString=$command;QuietUninstallString=$command}.GetEnumerator()) { New-ItemProperty -Path $registry -Name $pair.Key -Value $pair.Value -PropertyType String -Force | Out-Null }
         foreach ($key in @('NoModify','NoRepair')) { New-ItemProperty -Path $registry -Name $key -Value 1 -PropertyType DWord -Force | Out-Null }
     }
     Write-Host ('Installed Codex Liquid Glass in ' + $installRootPath)

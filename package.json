@@ -1,9 +1,14 @@
 {
   "name": "codex-liquid-glass",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Local Windows glass customization for a compatible installed OpenAI Codex desktop client.",
   "license": "MIT",
-  "engines": { "node": ">=18" },
-  "scripts": { "test": "node --test tests/patch.test.cjs", "check": "node --check scripts/patch.cjs" }
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test tests/patch.test.cjs",
+    "check": "node --check scripts/patch.cjs"
+  }
 }
