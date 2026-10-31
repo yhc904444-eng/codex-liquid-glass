@@ -1,17 +1,20 @@
-# Codex Liquid Glass
+# Frosted Glass
 
-A clear glass appearance for the **OpenAI Codex desktop app on Windows**.
+Frosted Glass (formerly Codex Liquid Glass) is an independent appearance customization for the **OpenAI Codex desktop app on Windows**.
 The customization brings a continuous acrylic window, translucent workspace,
 glass composer, settings panels, peeking sidebars, menus, tooltips, and hover popovers. Adjust
 tint, edge highlights, workspace transparency, composer transparency, and
 additional blur in **Settings > Appearance**. Changes apply immediately and
 are saved on your computer.
 
-This independent project builds a separate local copy from a compatible
+The project builds a separate local copy from a compatible
 official installation. OpenAI application binaries and personal data are not
 included in this repository or its downloads.
 
 ## Install
+
+Existing 1.1.0 release assets, shortcuts, and installation paths retain the
+**Codex Liquid Glass** name. Use those names when following the steps below.
 
 1. Use **Windows 11 22H2 or newer, x64**. Allow approximately **5 GB of free
    disk space** for the separate client copy and temporary installation files.
@@ -49,7 +52,7 @@ installer. The isolated profile and saved glass preferences are retained.
 
 Compatibility is checked against the original archive's SHA256 and the
 expected integration points before any local copy is modified. Future Codex
-updates may need a new Liquid Glass release. An unsupported version produces
+updates may need a new Frosted Glass release. An unsupported version produces
 a clear error. Do not downgrade a working official client to force a match.
 The automatic prerequisite download always fetches OpenAI's latest version,
 which may be newer than this release supports.
